@@ -17,7 +17,7 @@ function App() {
     const response = await api.post('repositories', {
       title: `Repositório ${Date.now()}`,
       url: `https://github.com/thiagoss95/${Date.now()}`,
-      techs: '["Javascript", "ReactJS"]',
+      techs: ["Javascript", "ReactJS"],
     });
 
     const newRepository = response.data;
@@ -25,7 +25,10 @@ function App() {
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    await api.delete(`repositories/${id}`);
+
+    //Removendo o repositório desejado utilizando o filter
+    setRepositories(repositories.filter(repository => repository.id !== id));
   }
 
   return (
@@ -33,11 +36,12 @@ function App() {
 
 
       <ul data-testid="repository-list">
-        {repositories.map(repository =>
-            <li key={repository.id}> {repository.title}
-            <button onClick={() => handleRemoveRepository(1)}> Remover </button>
+        {repositories.map(repository => (
+            <li key={repository.id}> 
+              {repository.title}
+              <button onClick={() => handleRemoveRepository(repository.id)}> Remover </button>
             </li>
-          )
+        ))
         }
 
         {/* <li>
