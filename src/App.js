@@ -8,13 +8,20 @@ function App() {
 
   //Preparação do componente para exibição em tela
   useEffect(() => {
-    api.get('/repositories').then(res => {
-      setRepositories(res.data);
+    api.get('repositories').then(response => {
+      setRepositories(response.data);
     });
   }, []);
 
   async function handleAddRepository() {
-    // TODO
+    const response = await api.post('repositories', {
+      title: `Repositório ${Date.now()}`,
+      url: `https://github.com/thiagoss95/${Date.now()}`,
+      techs: '["Javascript", "ReactJS"]',
+    });
+
+    const newRepository = response.data;
+    setRepositories([...repositories, newRepository]);
   }
 
   async function handleRemoveRepository(id) {
